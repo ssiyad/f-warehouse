@@ -2,6 +2,7 @@
 *.pyc
 *.egg-info
 *.swp
+**/__pycache__
 tags
 warehouse_management/docs/current
 node_modules/
