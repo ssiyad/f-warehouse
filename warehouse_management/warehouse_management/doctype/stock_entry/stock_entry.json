@@ -11,6 +11,7 @@
   "from_warehouse",
   "warehouse",
   "quantity",
+  "price",
   "amended_from"
  ],
  "fields": [
@@ -60,12 +61,19 @@
    "options": "Stock Entry",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "depends_on": "eval: ['Receipt', 'Transfer'].includes(doc.type)",
+   "fieldname": "price",
+   "fieldtype": "Currency",
+   "label": "Price",
+   "mandatory_depends_on": "eval: ['Receipt', 'Transfer'].includes(doc.type)"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-10 16:45:33.120230",
+ "modified": "2022-10-11 13:51:39.863414",
  "modified_by": "Administrator",
  "module": "Warehouse Management",
  "name": "Stock Entry",
