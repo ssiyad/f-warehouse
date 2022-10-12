@@ -7,8 +7,9 @@ from frappe.model.document import Document, frappe
 
 class StockEntry(Document):
     @staticmethod
-    def create_ledger_entry(item, warehouse, quantity_change, value_change):
+    def create_ledger_entry(stock_entry, item, warehouse, quantity_change, value_change):
         d = frappe.new_doc("Warehouse Ledger")
+        d.stock_entry = stock_entry
         d.item = item
         d.warehouse = warehouse
         d.quantity_change = quantity_change
@@ -67,18 +68,22 @@ class StockEntry(Document):
 
     def receipt(self, warehouse=None):
         self.create_ledger_entry(
+            self.name,
             self.item,
             warehouse or self.warehouse,
             self.quantity,
             self.quantity * self.price,
         )
+
         self.recalc_moving_average(
             self.item, warehouse or self.warehouse, self.quantity, self.price
         )
 
     def consume(self, warehouse=None):
         value = self.get_moving_average(self.item, warehouse or self.warehouse)
+
         self.create_ledger_entry(
+            self.name,
             self.item,
             warehouse or self.warehouse,
             self.quantity * -1,

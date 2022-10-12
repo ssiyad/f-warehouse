@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "stock_entry",
   "item",
   "warehouse",
   "quantity_change",
@@ -41,27 +42,31 @@
    "in_list_view": 1,
    "label": "Value Change",
    "reqd": 1
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-11 02:04:26.341224",
+ "modified": "2022-10-12 13:42:59.598543",
  "modified_by": "Administrator",
  "module": "Warehouse Management",
  "name": "Warehouse Ledger",
  "owner": "Administrator",
  "permissions": [
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "System Manager",
-   "share": 1,
-   "write": 1
+   "share": 1
   }
  ],
  "sort_field": "modified",

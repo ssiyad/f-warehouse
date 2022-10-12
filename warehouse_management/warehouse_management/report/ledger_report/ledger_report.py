@@ -6,6 +6,11 @@ import frappe
 def execute(filters=None):
 	columns = [
 		{
+			"fieldname": "modified",
+			"fieldtype": "Datetime",
+			"label": "Date",
+		},
+		{
 			"fieldname": "item",
 			"fieldtype": "Link",
 			"label": "Item",
