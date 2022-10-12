@@ -89,8 +89,13 @@
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2022-10-12 13:03:58.540953",
+ "links": [
+  {
+   "link_doctype": "Warehouse Ledger",
+   "link_fieldname": "stock_entry"
+  }
+ ],
+ "modified": "2022-10-12 14:44:23.400917",
  "modified_by": "Administrator",
  "module": "Warehouse Management",
  "name": "Stock Entry",
