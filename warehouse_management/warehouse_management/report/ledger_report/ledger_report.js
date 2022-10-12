@@ -3,7 +3,14 @@
 /* eslint-disable */
 
 frappe.query_reports["Ledger Report"] = {
-	"filters": [
+	"formatter": function(value, row, column, data, default_formatter) {
+		value = default_formatter(value, row, column, data);
 
-	]
+		if (column.id == "value_change" && data) {
+			color = data.value_change < 0 ? "red" : "green";
+			value = `<span style='color:${color};'>${value}</span>`;
+		}
+
+		return value;
+	},
 };
