@@ -45,11 +45,15 @@ class StockEntry(Document):
 
     @staticmethod
     def ensure_quantity(item, warehouse, quantity):
-        available_q = frappe.db.get_value(
-            "Warehouse Ledger",
-            {"warehouse": warehouse, "item": item},
-            "sum(quantity_change)",
+        available_q = (
+            frappe.db.get_value(
+                "Warehouse Ledger",
+                {"warehouse": warehouse, "item": item},
+                "sum(quantity_change)",
+            )
+            or 0
         )
+
         if available_q < quantity:
             frappe.throw("Insufficient quantity")
 
@@ -105,4 +109,3 @@ class StockEntry(Document):
 
     def before_cancel(self):
         frappe.throw("Can not cancel")
-
