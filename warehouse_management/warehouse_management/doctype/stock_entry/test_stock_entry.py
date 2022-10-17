@@ -20,32 +20,54 @@ TEST_WAREHOUSE_NAME = random_string()
 
 
 class TestStockEntry(FrappeTestCase):
-    def setup_item(self):
-        return frappe.get_doc(
+    @staticmethod
+    def setup_item():
+        if frappe.flags.test_item_created:
+            return
+
+        d = frappe.get_doc(
             {
                 "doctype": "Item",
                 "item_name": TEST_ITEM_NAME,
             }
         ).insert()
 
-    def drop_item(self):
-        frappe.delete_doc_if_exists("Item", TEST_ITEM_NAME)
+        frappe.flags.test_item_created = True
 
-    def get_item(self):
+        return d
+
+    @staticmethod
+    def drop_item():
+        frappe.delete_doc_if_exists("Item", {"item_name": TEST_ITEM_NAME})
+
+    @staticmethod
+    def get_item():
         return frappe.get_last_doc("Item", {"item_name": TEST_ITEM_NAME})
 
-    def setup_warehouse(self):
-        return frappe.get_doc(
+    @staticmethod
+    def setup_warehouse():
+        if frappe.flags.test_warehouse_created:
+            return
+
+        d = frappe.get_doc(
             {
                 "doctype": "Warehouse",
                 "warehouse_name": TEST_WAREHOUSE_NAME,
             }
         ).insert()
 
-    def drop_warehouse(self):
-        frappe.delete_doc_if_exists("Warehouse", TEST_WAREHOUSE_NAME)
+        frappe.flags.test_warehouse_created = True
 
-    def get_warehouse(self):
+        return d
+
+    @staticmethod
+    def drop_warehouse():
+        frappe.delete_doc_if_exists(
+            "Warehouse", {"warehouse_name": TEST_WAREHOUSE_NAME}
+        )
+
+    @staticmethod
+    def get_warehouse():
         return frappe.get_last_doc("Warehouse", {"warehouse_name": TEST_WAREHOUSE_NAME})
 
     def setUp(self):
