@@ -92,7 +92,7 @@ class TestStockEntry(FrappeTestCase):
         self.drop_moving_average()
         self.drop_stock_entry()
 
-    def test_moving_average_once(self):
+    def test_moving_average(self):
         item = self.get_item()
         warehouse = self.get_warehouse()
         total_price = total_quantity = 0
