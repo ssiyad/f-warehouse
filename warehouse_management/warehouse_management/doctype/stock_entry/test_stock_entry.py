@@ -76,6 +76,12 @@ class TestStockEntry(FrappeTestCase):
             "Stock Entry", {"item": TEST_ITEM_NAME, "warehouse": TEST_WAREHOUSE_NAME}
         )
 
+    @staticmethod
+    def drop_moving_average():
+        frappe.delete_doc_if_exists(
+            "Moving Average", {"item": TEST_ITEM_NAME, "warehouse": TEST_WAREHOUSE_NAME}
+        )
+
     def setUp(self):
         self.setup_item()
         self.setup_warehouse()
@@ -83,6 +89,7 @@ class TestStockEntry(FrappeTestCase):
     def tearDown(self):
         self.drop_item()
         self.drop_warehouse()
+        self.drop_moving_average()
         self.drop_stock_entry()
 
     def test_moving_average_once(self):
