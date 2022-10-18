@@ -70,6 +70,12 @@ class TestStockEntry(FrappeTestCase):
     def get_warehouse():
         return frappe.get_last_doc("Warehouse", {"warehouse_name": TEST_WAREHOUSE_NAME})
 
+    @staticmethod
+    def drop_stock_entry():
+        frappe.delete_doc_if_exists(
+            "Stock Entry", {"item": TEST_ITEM_NAME, "warehouse": TEST_WAREHOUSE_NAME}
+        )
+
     def setUp(self):
         self.setup_item()
         self.setup_warehouse()
@@ -77,6 +83,40 @@ class TestStockEntry(FrappeTestCase):
     def tearDown(self):
         self.drop_item()
         self.drop_warehouse()
+        self.drop_stock_entry()
+
+    def test_moving_average_once(self):
+        item = self.get_item()
+        warehouse = self.get_warehouse()
+        total_price = total_quantity = 0
+
+        for _ in range(random.randint(3, 10)):
+            quantity = random.randint(10, 100)
+            price = random.randint(10, 100)
+
+            frappe.get_doc(
+                {
+                    "doctype": "Stock Entry",
+                    "type": "Receipt",
+                    "item": item.name,
+                    "warehouse": warehouse.name,
+                    "quantity": quantity,
+                    "price": price,
+                }
+            ).submit()
+
+            total_price += price * quantity
+            total_quantity += quantity
+
+        d = frappe.get_value(
+            "Moving Average",
+            filters={"item": item.name, "warehouse": warehouse.name},
+            fieldname=["price", "quantity"],
+            as_dict=True,
+        )
+
+        self.assertAlmostEqual(d["price"], total_price / total_quantity)
+        self.assertEqual(d["quantity"], total_quantity)
 
     def test_transfer_same_warehouse(self):
         item = self.get_item()
